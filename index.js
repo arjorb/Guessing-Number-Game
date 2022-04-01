@@ -1,6 +1,6 @@
 'use strict';
 
-const secretNumber = Math.floor(Math.random() * 20) + 1;
+let secretNumber = Math.floor(Math.random() * 20) + 1;
 // console.log(secretNumber);
 let score = 20;
 
@@ -11,14 +11,23 @@ const btnAgain = document.querySelector('.again');
 const message = document.querySelector('.message');
 const scoreEl = document.querySelector('.score');
 const numberEl = document.querySelector('.number');
-
 const highScoreEl = document.querySelector('.highscore');
 
+//
+let highScoreLocal = localStorage.getItem('highscore');
+let highElement = (highScoreEl.textContent = !localStorage.getItem('highscore')
+  ? 0
+  : highScoreLocal);
+// const getNewHighScore = localStorage.getItem('newScore');
+
 const highScore = function () {
-  if (highScoreEl.textContent > score) {
-    return highScoreEl.textContent;
+  if (highScoreLocal > score) {
+    // console.log(`${highScoreLocal} is higher than ${score}`);
+    highScoreEl.textContent = highScoreLocal;
   } else {
-    return (highScoreEl.textContent = score);
+    localStorage.setItem('highscore', score);
+    // highScoreValue = localStorage.getItem('highscore');
+    // console.log(`${score} is higher than ${highScoreLocal}`);
   }
 };
 
@@ -54,9 +63,16 @@ btnCheck.addEventListener('click', function () {
 });
 
 btnAgain.addEventListener('click', function () {
-  message.textContent = 'Start quessing...';
-  scoreEl.textContent = 20;
-  numberEl.textContent = '?';
-  inputGuess.value = '';
-  document.querySelector('body').style.backgroundColor = '#222';
+  if (!localStorage.getItem('highscore')) {
+    console.log("can't work now banza ukine!");
+  } else {
+    secretNumber = Math.floor(Math.random() * 20) + 1;
+    score = 20;
+    message.textContent = 'Start quessing...';
+    scoreEl.textContent = score;
+    numberEl.textContent = '?';
+    inputGuess.value = '';
+    highScoreEl.textContent = localStorage.getItem('highscore');
+    document.querySelector('body').style.backgroundColor = '#222';
+  }
 });
